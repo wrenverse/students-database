@@ -2,6 +2,7 @@ import java.sql.*;
 
 public class PostgreSQLJDBCConnection {
 
+    // Colour codes for terminal output.
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_CYAN = "\u001B[36m";
@@ -9,12 +10,12 @@ public class PostgreSQLJDBCConnection {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_BLUE = "\u001B[34m";
 
+    // Output source colouring.
     public static final String OUT_PROGRAM = "[" + ANSI_YELLOW + "PROGRAM" + ANSI_RESET + "]: ";
     public static final String OUT_ERROR = "[" + ANSI_RED + "ERROR" + ANSI_RESET + "]: ";
     public static final String OUT_DATABASE = "[" + ANSI_PURPLE + "DATABASE" + ANSI_RESET + "]: ";
 
     private Connection conn;
-
     public PostgreSQLJDBCConnection(Connection conn) {
         this.conn = conn;
     }
@@ -25,14 +26,14 @@ public class PostgreSQLJDBCConnection {
     // Check if the database connection is connected.
     public boolean connectionOpen() { return !(conn == null); }
 
-    // Retrieve all records from the students table.
+    // Retrieve all records from the students table and print to terminal.
     public void getAllStudents() throws SQLException {
         String query = "SELECT * FROM students";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(query);
-        // Print out each student record.
         System.out.println(OUT_DATABASE + "Displaying all students in table " + out_table("students") + ".");
         System.out.println();
+        // Print the table header.
         System.out.println(
             String.format(
                 "\t%-10s | %-10s | %-10s | %-24s | %-15s",
@@ -44,6 +45,7 @@ public class PostgreSQLJDBCConnection {
             )
         );
         System.out.println("\t" + new String(new char[81]).replace("\0", "-"));
+        // Print the table rows.
         while (rs.next())
             System.out.println(
                 String.format(
@@ -123,10 +125,12 @@ public class PostgreSQLJDBCConnection {
         pstmt.close();
     }
 
+    // Format an input string with colour.
     private static String out_input(String input) {
         return ANSI_CYAN + input + ANSI_RESET;
     }
 
+    // Format a table string with colour.
     private static String out_table(String input) {
         return ANSI_BLUE + input + ANSI_RESET;
     }
@@ -142,6 +146,7 @@ public class PostgreSQLJDBCConnection {
         String user = args[3];
         String password = args[4];
 
+        // Confirm database credentials.
         System.out.println(OUT_PROGRAM + "Received database URL " + out_input(url) + ".");
         System.out.println(OUT_PROGRAM + "Database username set to " + out_input(user) + ".");
         System.out.println(OUT_PROGRAM + "Database password set to " + out_input(password) + ".");
@@ -169,8 +174,10 @@ public class PostgreSQLJDBCConnection {
                 conn.deleteStudent(4);
             }
             else System.out.println(OUT_PROGRAM + "Failed to establish connection to database.");
+            System.out.println(OUT_PROGRAM + "Database connection closed.");
             conn.close();
         } catch (ClassNotFoundException | SQLException e) {
+            // Catch any exceptions thrown by the driver.
             System.out.println(OUT_ERROR + "Exception thrown by the PostgreSQL JDBC driver.");
             System.out.println(OUT_ERROR + "Printing stack trace...");
             System.out.println();
