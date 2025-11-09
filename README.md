@@ -25,3 +25,5 @@ INSERT INTO students (first_name, last_name, email, enrollment_date) VALUES
 ```
 java -jar PostgreSQLJDBCConnection.jar <HOST> <PORT> <DATABASE_NAME> <USERNAME> <PASSWORD>
 ```
+
+Demo: https://mediaspace.carleton.ca/media/students-database-demo/1_4v0oxqcv
