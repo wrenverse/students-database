@@ -162,11 +162,11 @@ public class PostgreSQLJDBCConnection {
                 conn.addStudent(
                     "Tarō",
                     "Yamada",
-                    "ytaro@example.com",
+                    "t.yamada@example.com",
                     java.sql.Date.valueOf(java.time.LocalDate.now())
                 );
-                conn.updateStudentEmail(10, "taro.yamada@example.com");
-                conn.deleteStudent(10);
+                conn.updateStudentEmail(4, "taro.yamada@example.com");
+                conn.deleteStudent(4);
             }
             else System.out.println(OUT_PROGRAM + "Failed to establish connection to database.");
             conn.close();
